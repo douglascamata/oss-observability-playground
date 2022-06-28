@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  prometheus0:
+    image: prom/prometheus:v2.36.0
+    container_name: prometheus0
+    user: root
+    volumes:
+      - ./configs/prometheus/prometheus_read_only.yaml:/etc/prometheus/prometheus.yaml
+      - ./configs/prometheus/tsdb_snapshot:/data/tsdb
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/data/tsdb"
+      - "--web.enable-lifecycle"
+      - "--storage.tsdb.min-block-duration=30m"
+      - "--storage.tsdb.max-block-duration=30m"
+      - "--web.listen-address=0.0.0.0:9090"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    ports:
+      - 9090:9090
+    networks:
+      - prometheus
+    restart: always
+
+  grafana:
+    image: grafana/grafana:9.0.2
+    container_name: grafana
+    volumes:
+      - ./configs/grafana/data:/var/lib/grafana
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+      - ./configs/grafana/dashboards:/etc/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - prometheus
+
+networks:
+  prometheus: {}
