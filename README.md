@@ -2,6 +2,10 @@
 
 A collection of Docker Compose files that help me test/debug some scenarios.
 
+## Dependencies
+
+* Docker Compose
+
 ## What and where?
 
 ### prometheus_snapshot_reader
