@@ -1,14 +1,16 @@
-# Thanos Docker env
+# What is this?
 
-## How to run it?
+A collection of Docker Compose files that help me test/debug some scenarios.
 
-### With HA Prometheus and Thanos sidecars
+## What and where?
 
-```sh
-docker compose --profile sidecar up -d
-```
-### With single Thanos Receive and remote write
+### prometheus_snapshot_reader
 
-```sh
-docker compose --profile remote-write up -d
-```
+Small Prometheus & Grafana setup for reading TSDB snapshots.
+
+Supports Grafana dashboard & datasource provisioning.
+
+### thanos
+
+Small Thanos setup with two flavors: sidecar and receive. Pick between by
+layering config files (passing many instances of `-f config.yaml` to `docker compose`)

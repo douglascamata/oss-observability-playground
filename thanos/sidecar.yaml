@@ -1,0 +1,98 @@
+version: "3.9"
+
+services:
+  prometheus0:
+    image: prom/prometheus:v2.36.0
+    container_name: prometheus0
+    user: root
+    volumes:
+      - thanos0:/data
+      - ./prometheus/prometheus1.yaml:/etc/prometheus/prometheus.yaml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/data/prom0"
+      - "--web.enable-lifecycle"
+      - "--storage.tsdb.min-block-duration=30m"
+      - "--storage.tsdb.max-block-duration=30m"
+      - "--web.listen-address=0.0.0.0:9090"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    depends_on:
+      - minio
+    networks:
+      - thanos
+    restart: always
+
+  prometheus1:
+    image: prom/prometheus:v2.36.0
+    container_name: prometheus1
+    user: root
+    volumes:
+      - thanos1:/data
+      - ./prometheus/prometheus2.yaml:/etc/prometheus/prometheus.yaml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yaml"
+      - "--storage.tsdb.path=/data/prom1"
+      - "--web.enable-lifecycle"
+      - "--storage.tsdb.min-block-duration=30m"
+      - "--storage.tsdb.max-block-duration=30m"
+      - "--web.listen-address=0.0.0.0:9091"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    depends_on:
+      - minio
+    networks:
+      - thanos
+
+  sidecar0:
+    image: thanosio/thanos:v0.26.0
+    container_name: thanos-sidecar0
+    command:
+      - "sidecar"
+      - "--debug.name=sidecar-0"
+      - "--grpc-address=0.0.0.0:10901"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10902"
+      - "--http-grace-period=1s"
+      - "--prometheus.url=http://prometheus0:9090"
+      - "--tsdb.path=/data/prom0"
+      - "--objstore.config-file=/bucket.yaml"
+    volumes:
+      - thanos0:/data
+      - ./object_store/bucket.yaml:/bucket.yaml
+    depends_on:
+      - minio
+      - prometheus0
+    networks:
+      - thanos
+
+  sidecar1:
+    image: thanosio/thanos:v0.26.0
+    container_name: thanos-sidecar1
+    command:
+      - "sidecar"
+      - "--debug.name=sidecar-1"
+      - "--grpc-address=0.0.0.0:10911"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10912"
+      - "--http-grace-period=1s"
+      - "--prometheus.url=http://prometheus1:9091"
+      - "--tsdb.path=/data/prom1"
+      - "--objstore.config-file=/bucket.yaml"
+    volumes:
+      - thanos1:/data
+      - ./object_store/bucket.yaml:/bucket.yaml
+    depends_on:
+      - minio
+      - prometheus1
+    networks:
+      - thanos
+
+networks:
+  thanos: {}
+
+volumes:
+  minio: {}
+  thanos0: {}
+  thanos1: {}
+  thanos2: {}
