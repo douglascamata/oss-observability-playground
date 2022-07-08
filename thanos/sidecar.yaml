@@ -6,8 +6,8 @@ services:
     container_name: prometheus0
     user: root
     volumes:
-      - thanos0:/data
-      - ./prometheus/prometheus1.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus0:/data
+      - ./prometheus/prometheus0.yaml:/etc/prometheus/prometheus.yaml
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/data/prom0"
@@ -28,8 +28,8 @@ services:
     container_name: prometheus1
     user: root
     volumes:
-      - thanos1:/data
-      - ./prometheus/prometheus2.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus1:/data
+      - ./prometheus/prometheus1.yaml:/etc/prometheus/prometheus.yaml
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/data/prom1"
@@ -58,7 +58,7 @@ services:
       - "--tsdb.path=/data/prom0"
       - "--objstore.config-file=/bucket.yaml"
     volumes:
-      - thanos0:/data
+      - prometheus0:/data
       - ./object_store/bucket.yaml:/bucket.yaml
     depends_on:
       - minio
@@ -80,7 +80,7 @@ services:
       - "--tsdb.path=/data/prom1"
       - "--objstore.config-file=/bucket.yaml"
     volumes:
-      - thanos1:/data
+      - prometheus1:/data
       - ./object_store/bucket.yaml:/bucket.yaml
     depends_on:
       - minio
@@ -88,11 +88,6 @@ services:
     networks:
       - thanos
 
-networks:
-  thanos: {}
-
 volumes:
-  minio: {}
-  thanos0: {}
-  thanos1: {}
-  thanos2: {}
+  prometheus0: {}
+  prometheus1: {}

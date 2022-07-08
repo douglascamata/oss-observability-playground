@@ -3,11 +3,11 @@ version: "3.9"
 services:
   prometheus-remote-write:
     image: prom/prometheus:v2.36.0
-    container_name: prometheus2
+    container_name: prometheus_remote_write
     user: root
     volumes:
-      - thanos2:/data
-      - ./configs/prometheus/prometheus3.yaml:/etc/prometheus/prometheus.yaml
+      - prometheus_remote_write:/data
+      - ./prometheus/prometheus_remote_write.yaml:/etc/prometheus/prometheus.yaml
     command:
       - "--log.level=debug"
       - "--config.file=/etc/prometheus/prometheus.yaml"
@@ -23,7 +23,7 @@ services:
       - thanos
 
   thanos-receive:
-    image: thanos:latest
+    image: thanosio/thanos:v0.27.0
     container_name: thanos-receive
     command:
       - "receive"
@@ -59,3 +59,6 @@ services:
       - --metric-interval=315360000
       - --remote-tenant-header=THANOS-TENANT
       - --remote-tenant=0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
+
+volumes:
+  prometheus_remote_write: {}

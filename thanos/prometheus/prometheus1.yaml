@@ -1,15 +1,7 @@
 global:
   external_labels:
-    prometheus: prom-0
+    prometheus: prom-1
 scrape_configs:
-  # When the Thanos remote-write-receive component is started,
-  # this is an example configuration of a Prometheus server that
-  # would scrape a local node-exporter and replicate its data to
-  # the remote write endpoint.
-  - job_name: node
-    scrape_interval: 15s
-    static_configs:
-      - targets: ["node-exporter:9100"]
   - job_name: prometheus
     scrape_interval: 15s
     static_configs:
@@ -19,7 +11,7 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets:
-          - "sidecar0:10902"
+          - "sidecar1:10912"
   - job_name: thanos-store
     scrape_interval: 15s
     static_configs:

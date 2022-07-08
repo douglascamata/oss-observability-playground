@@ -1,16 +1,6 @@
 global:
   external_labels:
-    prometheus: prom-2
-remote_write:
-  - url: http://thanos-receive:10908/api/v1/receive
-  # - url: https://observatorium.apps.rhobs-testing.qqzf.p1.openshiftapps.com/api/metrics/v1/rhobs/api/v1/receive
-  #   oauth2:
-  #     client_secret: f0792197-2cce-456d-9fa2-e38a9b12965a
-  #     client_id: observatorium-rhobs-testing
-  #     endpoint_params:
-  #       audience: observatorium-telemeter-testing
-  #     token_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-
+    prometheus: prom-0
 scrape_configs:
   # When the Thanos remote-write-receive component is started,
   # this is an example configuration of a Prometheus server that
@@ -25,6 +15,11 @@ scrape_configs:
     static_configs:
       - targets:
           - "localhost:9091"
+  - job_name: thanos-sidecar
+    scrape_interval: 15s
+    static_configs:
+      - targets:
+          - "sidecar0:10902"
   - job_name: thanos-store
     scrape_interval: 15s
     static_configs:
