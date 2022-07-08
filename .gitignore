@@ -1,3 +1,7 @@
+prometheus_snapshot_reader/snapshots
+prometheus_snapshot_reader/grafana/dashboards
+prometheus_snapshot_reader/grafana/data
+
 # General
 .DS_Store
 .AppleDouble

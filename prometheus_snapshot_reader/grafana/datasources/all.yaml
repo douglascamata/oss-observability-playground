@@ -1,4 +1,5 @@
 apiVersion: 1
+
 datasources:
   - access: "proxy" # make grafana perform the requests
     editable: true # whether it should be editable

@@ -6,8 +6,8 @@ services:
     container_name: prometheus0
     user: root
     volumes:
-      - ./configs/prometheus/prometheus_read_only.yaml:/etc/prometheus/prometheus.yaml
-      - ./configs/prometheus/tsdb_snapshot:/data/tsdb
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./snapshots:/data/tsdb
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/data/tsdb"
@@ -27,9 +27,10 @@ services:
     image: grafana/grafana:9.0.2
     container_name: grafana
     volumes:
-      - ./configs/grafana/data:/var/lib/grafana
-      - ./configs/grafana/provisioning:/etc/grafana/provisioning
-      - ./configs/grafana/dashboards:/etc/grafana/dashboards
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./../configs/grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
