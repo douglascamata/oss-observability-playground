@@ -7,7 +7,7 @@ services:
     user: root
     volumes:
       - prometheus_remote_write:/data
-      - ./prometheus/prometheus_remote_write.yaml:/etc/prometheus/prometheus.yaml
+      - ./prometheus/remote_write.yaml:/etc/prometheus/prometheus.yaml
     command:
       - "--log.level=debug"
       - "--config.file=/etc/prometheus/prometheus.yaml"
