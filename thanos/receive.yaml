@@ -60,5 +60,29 @@ services:
       - --remote-tenant-header=THANOS-TENANT
       - --remote-tenant=0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 
+  thanos-query:
+    image: thanosio/thanos:v0.26.0
+    container_name: thanos-query
+    command:
+      - "query"
+      - "--debug.name=query0"
+      - "--grpc-address=0.0.0.0:10903"
+      - "--grpc-grace-period=1s"
+      - "--http-address=0.0.0.0:10904"
+      - "--http-grace-period=1s"
+      - "--query.replica-label=prometheus"
+      - "--store=sidecar0:10901"
+      - "--store=sidecar1:10911"
+      - "--store=thanos-store:10905"
+      - "--store=thanos-receive:10907"
+    ports:
+      - 10904:10904
+    depends_on:
+      - minio
+      - thanos-store
+      - thanos-receive
+    networks:
+      - thanos
+
 volumes:
   prometheus_remote_write: {}
