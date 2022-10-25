@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   prometheus0:
-    image: prom/prometheus:v2.36.0
+    image: prom/prometheus:v2.39.1
     container_name: prometheus0
     user: root
     volumes:
@@ -24,7 +24,7 @@ services:
     restart: always
 
   prometheus1:
-    image: prom/prometheus:v2.36.0
+    image: prom/prometheus:v2.39.1
     container_name: prometheus1
     user: root
     volumes:
