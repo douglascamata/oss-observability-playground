@@ -86,20 +86,15 @@ services:
       - minio:/export
     ports:
       - "9000:9000"
+      - "8000:8000"
     networks:
       - thanos
     environment:
       MINIO_ACCESS_KEY: EXAMPLEKEY
       MINIO_SECRET_KEY: EXAMPLESECRET
-    command: server /export
+    command: server /export --console-address :8000
     healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:9000/minio/health/live"
-        ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/console" ]
       interval: 30s
       timeout: 20s
       retries: 3
