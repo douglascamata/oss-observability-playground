@@ -45,7 +45,7 @@ services:
       - thanos
 
   sidecar0:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-sidecar0
     command:
       - "sidecar"
@@ -67,7 +67,7 @@ services:
       - thanos
 
   sidecar1:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-sidecar1
     command:
       - "sidecar"
@@ -89,7 +89,7 @@ services:
       - thanos
 
   thanos-query:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-query
     command:
       - "query"

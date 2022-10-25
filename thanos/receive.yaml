@@ -23,7 +23,7 @@ services:
       - thanos
 
   thanos-receive:
-    image: thanosio/thanos:v0.27.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-receive
     command:
       - "receive"
@@ -61,7 +61,7 @@ services:
       - --remote-tenant=0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 
   thanos-query:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-query
     command:
       - "query"

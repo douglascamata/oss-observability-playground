@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   thanos-store:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-store
     restart: always
     command:
@@ -41,7 +41,7 @@ services:
     restart: always
 
   thanos-compact:
-    image: thanosio/thanos:v0.26.0
+    image: thanosio/thanos:v0.28.1
     container_name: thanos-compact
     command:
       - "compact"
