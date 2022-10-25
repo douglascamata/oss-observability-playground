@@ -58,8 +58,6 @@ services:
       - minio
       - mc
       - thanos-store
-      - sidecar0
-      - sidecar1
     networks:
       - thanos
 
